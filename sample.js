@@ -39,6 +39,15 @@ async function main() {
 
   // ----------------------------------------------------------
   // TODO 1 - insertOne with an embedded object
+await books.insertOne({
+    title: "The Master and Margarita",
+    author: "Mikhail Bulgakov",
+    publisher: {
+      name: "YMCA-Press",
+      country: "France"
+    }
+  });
+
   // ----------------------------------------------------------
   // In mongosh you would write:
   //   db.books.insertOne({ title: "...", publisher: { name: "...", country: "..." } })
@@ -48,18 +57,57 @@ async function main() {
 
   // ----------------------------------------------------------
   // TODO 2 - insertOne with an array
+  await books.insertOne({
+    title: "Roadside Picnic",
+    author: "Arkady and Boris Strugatsky",
+    tags: ["sci-fi", "post-apocalyptic", "soviet-classic"]
+  });
   // ----------------------------------------------------------
   // Insert one book that has a tags field containing
   // an array of at least 3 strings.
 
   // ----------------------------------------------------------
   // TODO 3 - insertMany
+  await books.insertMany([
+    {
+      title: "Crime and Punishment",
+      author: "Fyodor Dostoevsky",
+      publisher: { name: "Actes Sud", country: "France" },
+      tags: ["psychology", "philosophy", "classic"]
+    },
+    {
+      title: "War and Peace",
+      author: "Leo Tolstoy",
+      publisher: { name: "The Russian Messenger", country: "Russia" }
+    },
+    {
+      title: "Eugene Onegin",
+      author: "Alexander Pushkin",
+      tags: ["poetry", "novel-in-verse", "romance"]
+    },
+    {
+      title: "Doctor Zhivago",
+      author: "Boris Pasternak",
+      publisher: { name: "Gallimard", country: "France" },
+      tags: ["historical", "drama", "nobel-prize"]
+    },
+    {
+      title: "We",
+      author: "Yevgeny Zamyatin",
+      publisher: { name: "E. P. Dutton", country: "USA" },
+      tags: ["dystopia", "sci-fi", "classic"]
+    }
+  ]);
+
   // ----------------------------------------------------------
   // Insert at least 5 books in a single call using insertMany.
   // Include a mix: some with a publisher object, some with tags, some with both.
 
   // ----------------------------------------------------------
   // TODO 4 - find all documents
+  console.log("--- All books ---");
+  const allBooks = await books.find({}).toArray();
+  allBooks.forEach((book) => console.log(book.title));
   // ----------------------------------------------------------
   // Retrieve every document in the collection and log each title.
   // Hint: find() returns a cursor - call .toArray() to get an array.
@@ -74,12 +122,19 @@ async function main() {
 
   // ----------------------------------------------------------
   // TODO 6 - find with a filter
+  console.log("\n--- All French-published books ---");
+  const frenchBooks = await books.find({ "publisher.country": "France" }).toArray();
+  console.log(`Count: ${frenchBooks.length}`);
+  frenchBooks.forEach((book) => console.log(book.title));
   // ----------------------------------------------------------
   // Find all books whose publisher.country is "France".
   // Log how many there are and list their titles.
 
   // ----------------------------------------------------------
   // TODO 7 - find with $exists
+  console.log("\n--- Books with tags ---");
+  const booksWithTags = await books.find({ tags: { $exists: true } }).toArray();
+  booksWithTags.forEach((book) => console.log(`${book.title}: [${book.tags.join(", ")}]`));
   // ----------------------------------------------------------
   // Find all books that have a tags field, regardless of its value.
   //   { tags: { $exists: true } }
