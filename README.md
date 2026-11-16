@@ -3,6 +3,7 @@
 [![Grade Lab Intro](https://github.com/web-development-mart/norelational-databases/actions/workflows/grade-intro.yml/badge.svg)](https://github.com/web-development-mart/norelational-databases/actions/workflows/grade-intro.yml)
 
 ## What this lab is about
+op
 
 In session 1 you ran MongoDB commands directly in the shell:
 
