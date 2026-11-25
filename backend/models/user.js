@@ -1,12 +1,22 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  // TODO : define the schema for a User with the following fields:
-  // - name: String (required)
-  // - email: String (required)
-  // - skills: Array of Strings
-  // - address: { city: String, country: String }
-  // - avatar: String
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  skills: {
+    type: [String]
+  },
+  address: {
+    city: String,
+    country: String
+  },
+  avatar: String
 });
 
 module.exports = mongoose.model("User", userSchema);
